@@ -16,7 +16,7 @@
 # Iterated Prisoner's Dilemma with Death, Asymmetric Power, and Aggressor Reputation
 import random
 # There are twelve strategies, six of which are cooperative and never defect first against a non-aggressor, and six that can defect first.
-strategies = ['always_cooperate', 'always_defect', 'tit-for-tat', 'grim_trigger', 'pavlov', 'equalizer', 'opportunist', 'smart_opportunist', 'betrayer', 'random', 'enforcer', 'avenger']
+strategies = ['always_cooperate', 'always_defect', 'tit-for-tat', 'grim_trigger', 'pavlov', 'equalizer', 'opportunist', 'smart_opportunist', 'betrayer', 'random', 'enforcer', 'avenger', 'sycophant']
 
 class Player:
     points = 0
@@ -133,6 +133,13 @@ class Player:
             elif self.opponent.action == 'defect':
                 return 'defect'
             else:
+                return 'cooperate'
+        elif self.strategy == 'sycophant':
+            if self.points > self.opponent.points:
+                # Defect if opponent is weaker
+                return 'defect'
+            else:
+                # Cooperate if opponent is stronger
                 return 'cooperate'
 class Game:
     players = []
