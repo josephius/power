@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Peace Or War Each Round (POWER)
 # Iterated Prisoner's Dilemma with Death, Asymmetric Power, and Aggressor Reputation
 import random
 # There are twelve strategies, six of which are cooperative and never defect first against a non-aggressor, and six that can defect first.
