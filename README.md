@@ -1,4 +1,6 @@
-# Iterated Prisoner’s Dilemma with Death, Asymmetric Power, and Aggressor Reputation
+# Peace Or War Each Round (POWER)
+
+## Iterated Prisoner’s Dilemma with Death, Asymmetric Power, and Aggressor Reputation
 
 A modification to the Iterated Prisoner’s Dilemma with the following changes:
 
