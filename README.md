@@ -42,7 +42,7 @@ Each round of the tournament, there is a random 1/5 chance that two players will
 
 ## Strategies
 
-There are a total of twelve strategies, six strategies that are cooperative and never defect first against a non-aggressor, and six that can defect first. Each strategy will start with 10 players for a total of 120 players in the pool.
+There are a total of thirteen strategies, six strategies that are cooperative and never defect first against a non-aggressor, and seven that can defect first. Each strategy will start with 10 players for a total of 130 players in the pool.
 
 ### Cooperative
 
@@ -61,6 +61,7 @@ There are a total of twelve strategies, six strategies that are cooperative and 
 * Smart Opportunist (Defect when twice as strong or greater, otherwise Tit-For-Tat)
 * Betrayer (Defect when greater than half as strong and other player Cooperates, otherwise Tit-For-Tat)
 * Random (50% Cooperate, 50% Defect)
+* Sycophant (Defect when stronger, otherwise Cooperate)
 
 ## Scoring
 
