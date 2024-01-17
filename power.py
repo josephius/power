@@ -24,6 +24,8 @@ class Player:
     action = None
     opponent = None
     aggressor = False # A state that is determined by whether a player ever defected first in any round of any match
+    allies = []
+    enemies = []
 
     def __init__(self, points, strategy):
         self.points = points
@@ -112,7 +114,8 @@ class Player:
             else:
                 return 'defect'
         elif self.strategy == 'enforcer':
-            if self.opponent.aggressor == True and self.action == None:
+            #if self.opponent.aggressor == True and self.action == None:
+            if self.opponent in self.enemies and self.action == None:
                 #Open with retaliation against aggressor
                 return 'defect'
             else:
@@ -122,7 +125,8 @@ class Player:
                 else:
                     return self.opponent.action
         elif self.strategy == 'avenger':
-            if self.opponent.aggressor == True and self.action == None:
+            #if self.opponent.aggressor == True and self.action == None:
+            if self.opponent in self.enemies and self.action == None:
                 # Open with retaliation against aggressor
                 return 'defect'
             # Play Grim Trigger the rest of the time
@@ -241,22 +245,58 @@ def play_dilemma(player):
     if player_1_action == 'cooperate':
         player_1_points += player.points / 4.0
         player_2_points += player.points / 2.0
+        if player not in player.opponent.enemies and player not in player.opponent.allies and player_2_action == 'cooperate':
+            # First contact is friendly
+            for p in player.opponent.allies:
+                # Join the alliance
+                if player not in p.enemies and player not in p.allies:
+                    p.allies.append(player)
+            player.opponent.allies.append(player)
     elif player_1_action == 'defect':
         player_1_points += min(player.points / 4.0, player.opponent.points) # Can't gain more points than the opponent's points
         player_2_points -= player.points / 2.0
         if player.opponent.aggressor == False:
             # When a player defects first against a non-aggressor, they are labeled an aggressor
             player_1_aggressor = True
+        if player not in player.opponent.enemies and player.opponent not in player.enemies:
+            # Player 1 defects first
+            if player in player.opponent.allies:
+                # Remove from allies and make enemy
+                player.opponent.allies.remove(player)
+            player.opponent.enemies.append(player)
+            for p in player.opponent.allies:
+                # Remove from alliance and make enemy of entire alliance
+                if player in p.allies:
+                    p.allies.remove(player)
+                p.enemies.append(player)
     # Player 2 can cooperate or defect
     if player_2_action == 'cooperate':
         player_2_points += player.opponent.points / 4.0
         player_1_points += player.opponent.points / 2.0
+        if player.opponent not in player.enemies and player not in player.allies and player_1_action == 'cooperate':
+            # First contact is friendly
+            for p in player.allies:
+                # Join the alliance
+                if player not in p.enemies and player not in p.allies:
+                    p.allies.append(player)
+            player.allies.append(player)
     elif player_2_action == 'defect':
         player_2_points += min(player.opponent.points / 4.0, player.points) # Can't gain more points than the opponent's points
         player_1_points -= player.opponent.points / 2.0
         if player.aggressor == False:
             # When a player defects first against a non-aggressor, they are labeled an aggressor
             player_2_aggressor = True
+        if player.opponent not in player.enemies and player not in player.opponent.enemies:
+            # Player 2 defects first
+            if player.opponent in player.allies:
+                # Remove from allies and make enemy
+                player.allies.remove(player.opponent)
+            player.enemies.append(player.opponent)
+            for p in player.allies:
+                # Remove from alliance and make enemy of entire alliance
+                if player.opponent in p.allies:
+                    p.allies.remove(player.opponent)
+                p.enemies.append(player.opponent)
     # Set permanent state variables with temporary ones to ensure that round is a single simultaneous turn
     player.action = player_1_action
     player.opponent.action = player_2_action
