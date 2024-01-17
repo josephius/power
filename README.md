@@ -72,7 +72,9 @@ Two scores will be calculated at the end of the game:
 
 ## Results
 
-With the Avenger strategy in play, the cooperative strategies that are never aggressors seem to always win with enough rounds, with all aggressor strategies dead eventually. Without the Avenger strategy in play, the results vary, but occasionally a single Opportunist strategy ends up winning as the sole survivor.
+With the cooperative strategies that target aggressors in play, a decent sized bunch of cooperative strategy players will win with enough rounds, with all aggressor strategy players except sometimes a few opportunistic ones being dead. Those opportunistic aggressors that survived were probably so weak to start with that they never actually aggressed.
+
+Without the anti-aggressor strategies in play, it tends to be the case that there are a few cooperative strategy players alive but everyone else has been eaten by an Opportunist strategy player, who only leaves the few alive because they are stronger than it. Occasionally only a single Opportunist or Betrayer survives to the end.
 
 ## License
 
