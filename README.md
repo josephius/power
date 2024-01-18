@@ -64,6 +64,7 @@ There are a total of thirteen strategies, six strategies that are cooperative an
 * Betrayer (Defect when greater than half as strong and other player Cooperates, otherwise Tit-For-Tat)
 * Random (50% Cooperate, 50% Defect)
 * Sycophant (Defect when stronger, otherwise Cooperate)
+* Strategic Opportunist (Defect when stronger than strongest player in alliance, otherwise Tit-For-Tat)
 
 ## Scoring
 
@@ -74,7 +75,7 @@ Two scores will be calculated at the end of the game:
 
 ## Results
 
-With the cooperative strategies that target aggressors in play (having Avenger in particular seems to matter), a decent sized bunch of cooperative strategy players will usually win with enough rounds, with all aggressor strategy players being dead except occasionally a few weaker opportunistic ones. Those opportunistic aggressors that survived were probably so weak to start with that they never actually aggressed, hence why they survived.
+With the cooperative strategies that target aggressors in play (having Avenger in particular seems to matter), a decent sized bunch of cooperative strategy players will usually win with enough rounds, with all aggressor strategy players being dead except for Strategic Opportunist occasionally a few weaker opportunistic ones. Those opportunistic aggressors that survived were probably so weak to start with that they never actually aggressed, hence why they survived.
 
 Without the anti-aggressor strategies in play, it tends to be the case that there are a few cooperative strategy players alive but everyone else has been eaten by an Opportunist strategy player, who only leaves the few alive because they are stronger than it. Occasionally only a single Opportunist or Betrayer survives to the end.
 
