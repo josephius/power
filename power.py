@@ -16,7 +16,7 @@
 # Iterated Prisoner's Dilemma with Death, Asymmetric Power, and Aggressor Reputation
 import random
 # There are twelve strategies, six of which are cooperative and never defect first against a non-aggressor, and six that can defect first.
-strategies = ['always_cooperate', 'always_defect', 'tit-for-tat', 'grim_trigger', 'pavlov', 'equalizer', 'opportunist', 'smart_opportunist', 'betrayer', 'random', 'enforcer', 'avenger', 'sycophant']
+strategies = ['always_cooperate', 'always_defect', 'tit-for-tat', 'grim_trigger', 'pavlov', 'equalizer', 'opportunist', 'smart_opportunist', 'betrayer', 'random', 'enforcer', 'avenger', 'sycophant', 'strategic_opportunist']
 
 class Player:
     points = 0
@@ -145,6 +145,20 @@ class Player:
             else:
                 # Cooperate if opponent is stronger
                 return 'cooperate'
+        elif self.strategy == 'strategic_opportunist':
+            max_points = 0
+            for opponent in self.opponent.allies:
+                if opponent.points > max_points:
+                    max_points = opponent.points
+            if self.points > max_points:
+                # Defect if all opponents in alliance are weaker
+                return 'defect'
+            else:
+                # Otherwise, play Tit-For-Tat
+                if self.action == None:
+                    return 'cooperate'
+                else:
+                    return self.opponent.action
 class Game:
     players = []
     pairs = {}
@@ -245,11 +259,11 @@ def play_dilemma(player):
     if player_1_action == 'cooperate':
         player_1_points += player.points / 4.0
         player_2_points += player.points / 2.0
-        if player not in player.opponent.enemies and player not in player.opponent.allies and player_2_action == 'cooperate':
-            # First contact is friendly
+        if player not in player.opponent.allies and player_2_action == 'cooperate':
+            # Peace
             for p in player.opponent.allies:
                 # Join the alliance
-                if player not in p.enemies and player not in p.allies:
+                if player not in p.allies:
                     p.allies.append(player)
             player.opponent.allies.append(player)
     elif player_1_action == 'defect':
@@ -259,7 +273,7 @@ def play_dilemma(player):
             # When a player defects first against a non-aggressor, they are labeled an aggressor
             player_1_aggressor = True
         if player not in player.opponent.enemies and player.opponent not in player.enemies:
-            # Player 1 defects first
+            # Act of aggression
             if player in player.opponent.allies:
                 # Remove from allies and make enemy
                 player.opponent.allies.remove(player)
@@ -269,25 +283,6 @@ def play_dilemma(player):
                 if player in p.allies:
                     p.allies.remove(player)
                 p.enemies.append(player)
-    # Player 2 can cooperate or defect
-    if player_2_action == 'cooperate':
-        player_2_points += player.opponent.points / 4.0
-        player_1_points += player.opponent.points / 2.0
-        if player.opponent not in player.enemies and player not in player.allies and player_1_action == 'cooperate':
-            # First contact is friendly
-            for p in player.allies:
-                # Join the alliance
-                if player not in p.enemies and player not in p.allies:
-                    p.allies.append(player)
-            player.allies.append(player)
-    elif player_2_action == 'defect':
-        player_2_points += min(player.opponent.points / 4.0, player.points) # Can't gain more points than the opponent's points
-        player_1_points -= player.opponent.points / 2.0
-        if player.aggressor == False:
-            # When a player defects first against a non-aggressor, they are labeled an aggressor
-            player_2_aggressor = True
-        if player.opponent not in player.enemies and player not in player.opponent.enemies:
-            # Player 2 defects first
             if player.opponent in player.allies:
                 # Remove from allies and make enemy
                 player.allies.remove(player.opponent)
@@ -297,6 +292,44 @@ def play_dilemma(player):
                 if player.opponent in p.allies:
                     p.allies.remove(player.opponent)
                 p.enemies.append(player.opponent)
+        
+    # Player 2 can cooperate or defect
+    if player_2_action == 'cooperate':
+        player_2_points += player.opponent.points / 4.0
+        player_1_points += player.opponent.points / 2.0
+        if player not in player.allies and player_1_action == 'cooperate':
+            # Peace
+            for p in player.allies:
+                # Join the alliance
+                if player not in p.allies:
+                    p.allies.append(player)
+            player.allies.append(player)
+    elif player_2_action == 'defect':
+        player_2_points += min(player.opponent.points / 4.0, player.points) # Can't gain more points than the opponent's points
+        player_1_points -= player.opponent.points / 2.0
+        if player.aggressor == False:
+            # When a player defects first against a non-aggressor, they are labeled an aggressor
+            player_2_aggressor = True
+        if player.opponent not in player.enemies and player not in player.opponent.enemies:
+            # Act of aggression
+            if player.opponent in player.allies:
+                # Remove from allies and make enemy
+                player.allies.remove(player.opponent)
+            player.enemies.append(player.opponent)
+            for p in player.allies:
+                # Remove from alliance and make enemy of entire alliance
+                if player.opponent in p.allies:
+                    p.allies.remove(player.opponent)
+                p.enemies.append(player.opponent)
+            if player in player.opponent.allies:
+                # Remove from allies and make enemy
+                player.opponent.allies.remove(player)
+            player.opponent.enemies.append(player)
+            for p in player.opponent.allies:
+                # Remove from alliance and make enemy of entire alliance
+                if player in p.allies:
+                    p.allies.remove(player)
+                p.enemies.append(player)
     # Set permanent state variables with temporary ones to ensure that round is a single simultaneous turn
     player.action = player_1_action
     player.opponent.action = player_2_action
