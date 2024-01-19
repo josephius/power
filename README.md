@@ -32,6 +32,13 @@ The cooperator gains points equal to an eighth of the cooperator’s points minu
 
 Players gain points equal to a quarter of their points (up to the other player’s total points) minus half the other player’s points. Note that this means the stronger player must be at least double the strength of the weaker player to avoid losing points as well.
 
+### Payoff Matrix
+
+|           | Cooperate | Defect |
+|-----------|-----------|--------|
+| Cooperate | 3, 3      | -3, 4  |
+| Defect    | 4, -3     | -2, -2 |
+
 ## Aggressor Reputation
 
 ~If a player defects against a non-aggressor, they get labelled an aggressor for the remainder of the game.~
