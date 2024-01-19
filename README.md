@@ -14,7 +14,7 @@ The payoff matrix now includes the points variable, and works as follows:
 
 ### Cooperate
 
-When a player cooperates, they gain points equal to a quarter of the cooperator’s points, and the other player gains points equal to half the cooperator’s points.
+When a player cooperates, they gain points equal to an eighth of the cooperator’s points, and the other player gains points equal to a quarter of the cooperator’s points.
 
 ### Defect
 
@@ -22,11 +22,11 @@ When a player defects, they cause the other player to lose points equal to half 
 
 ### C + C
 
-Players each gain points equal to a quarter of the player’s points plus half the other player’s points. Note that this means that over time the player’s points will gradually approach parity. Stronger players benefit proportionately less than weaker players from this, to the point that if the stronger player is more than double the weaker player’s strength, it is worse than not interacting at all.
+Players each gain points equal to an eighth of the player’s points plus a quarter of the other player’s points. Note that this means that over time the player’s points will gradually approach parity. Stronger players benefit proportionately less than weaker players from this, to the point that if the stronger player is more than double the weaker player’s strength, it is worse than not interacting at all.
 
 ### C + D
 
-The cooperator gains points equal to a quarter of the cooperator’s points minus half the defector’s points, and the defector gains points equal to half the cooperator’s points plus a quarter of the defector’s points. Note this means that a weaker player can leapfrog a stronger player if they are greater than half as strong.
+The cooperator gains points equal to an eighth of the cooperator’s points minus half the defector’s points, and the defector gains points equal to a quarter of the cooperator’s points plus a quarter of the defector’s points. Note this means that a weaker player can leapfrog a stronger player if they are greater than half as strong.
 
 ### D + D
 
@@ -40,7 +40,7 @@ Players can form alliances (technically defensive pacts) with players they are c
 
 ## Rounds
 
-Each round of the tournament, there is a random 1/5 chance that two players will make contact. Once contact starts the players will interact for a random number of rounds (each round there is a 1/5 chance of it being the last round) or until one of them dies, after which the surviving players will return to the pool to again have a random chance of making contact. At the end of each round, players that are not interacting will gain points equal to half of their points. Each round there is a 1/200 chance that it will be the last round.
+Each round of the tournament, there is a random 1/5 chance that two players will make contact. Once contact starts the players will interact for a random number of rounds (each round there is a 1/5 chance of it being the last round) or until one of them dies, after which the surviving players will return to the pool to again have a random chance of making contact. At the end of each round, players that are not interacting will gain points equal to a quarter of their points. Each round there is a 1/200 chance that it will be the last round.
 
 ## Strategies
 
