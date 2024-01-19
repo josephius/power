@@ -36,7 +36,7 @@ Players gain points equal to a quarter of their points (up to the other playerâ€
 
 ~If a player defects against a non-aggressor, they get labelled an aggressor for the remainder of the game.~
 
-Players can form alliances with people they are cooperating with and make enemies with anyone who defects first against themselves or an ally. Such enemies are considered aggressors to everyone in the alliance.
+Players can form alliances (technically defensive pacts) with players they are cooperating with and make enemies with anyone who defects first against themselves or an ally. Such enemies are considered aggressors to everyone in the alliance.
 
 ## Rounds
 
