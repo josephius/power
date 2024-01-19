@@ -15,7 +15,7 @@
 # Peace Or War Each Round (POWER)
 # Iterated Prisoner's Dilemma with Death, Asymmetric Power, and Aggressor Reputation
 import random
-# There are twelve strategies, six of which are cooperative and never defect first against a non-aggressor, and six that can defect first.
+# There are fourteen strategies, six of which are cooperative and never defect first against a non-aggressor, and eight that can defect first.
 strategies = ['always_cooperate', 'always_defect', 'tit-for-tat', 'grim_trigger', 'pavlov', 'equalizer', 'opportunist', 'smart_opportunist', 'betrayer', 'random', 'enforcer', 'avenger', 'sycophant', 'strategic_opportunist']
 
 class Player:
