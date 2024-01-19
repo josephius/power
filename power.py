@@ -146,10 +146,10 @@ class Player:
                 # Cooperate if opponent is stronger
                 return 'cooperate'
         elif self.strategy == 'strategic_opportunist':
-            max_points = 0
-            for opponent in self.opponent.allies:
-                if opponent.points > max_points:
-                    max_points = opponent.points
+            max_points = self.opponent.points
+            for ally in self.opponent.allies:
+                if ally.points > max_points:
+                    max_points = ally.points
             if self.points > max_points:
                 # Defect if all opponents in alliance are weaker
                 return 'defect'
