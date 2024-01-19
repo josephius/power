@@ -209,7 +209,7 @@ class Game:
                             done[self.pairs[i]] = True
                     else:
                         # Gain points when not in a match
-                        player.points += player.points / 2.0
+                        player.points += player.points / 4.0
                 else:
                     # Player is in a match
                     play_dilemma(player) # Play next round of match
@@ -257,8 +257,8 @@ def play_dilemma(player):
     player_2_aggressor = player.opponent.aggressor
     # Player 1 can cooperate or defect
     if player_1_action == 'cooperate':
-        player_1_points += player.points / 4.0
-        player_2_points += player.points / 2.0
+        player_1_points += player.points / 8.0
+        player_2_points += player.points / 4.0
         if player not in player.opponent.allies and player not in player.opponent.enemies and player_2_action == 'cooperate':
             # Peace
             for ally in player.opponent.allies:
@@ -296,8 +296,8 @@ def play_dilemma(player):
         
     # Player 2 can cooperate or defect
     if player_2_action == 'cooperate':
-        player_2_points += player.opponent.points / 4.0
-        player_1_points += player.opponent.points / 2.0
+        player_2_points += player.opponent.points / 8.0
+        player_1_points += player.opponent.points / 4.0
         if player.opponent not in player.allies and player.opponent not in player.enemies and player_1_action == 'cooperate':
             # Peace
             for ally in player.allies:
@@ -355,3 +355,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
