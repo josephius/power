@@ -26,7 +26,7 @@ Players each gain points equal to an eighth of the player’s points plus a quar
 
 ### C + D
 
-The cooperator gains points equal to an eighth of the cooperator’s points minus half the defector’s points, and the defector gains points equal to a quarter of the cooperator’s points plus a quarter of the defector’s points. Note this means that a weaker player can leapfrog a stronger player if they are greater than half as strong.
+The cooperator gains points equal to an eighth of the cooperator’s points minus half the defector’s points, and the defector gains points equal to a quarter of the cooperator’s points plus a quarter of the defector’s points (up to the cooperator’s total points). Note this means that a weaker player can leapfrog a stronger player if they are greater than half as strong.
 
 ### D + D
 
