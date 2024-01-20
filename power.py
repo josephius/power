@@ -15,8 +15,8 @@
 # Peace Or War Each Round (POWER)
 # Iterated Prisoner's Dilemma with Death, Asymmetric Power, and Aggressor Reputation
 import random
-# There are fourteen strategies, six of which are cooperative and never defect first against a non-aggressor, and eight that can defect first.
-strategies = ['always_cooperate', 'always_defect', 'tit-for-tat', 'grim_trigger', 'pavlov', 'equalizer', 'opportunist', 'smart_opportunist', 'betrayer', 'random', 'enforcer', 'avenger', 'sycophant', 'strategic_opportunist']
+# There are fifteen strategies, six of which are cooperative and never defect first against a non-aggressor, and nine that can defect first.
+strategies = ['always_cooperate', 'always_defect', 'tit-for-tat', 'grim_trigger', 'pavlov', 'equalizer', 'opportunist', 'smart_opportunist', 'betrayer', 'random', 'enforcer', 'avenger', 'sycophant', 'strategic_opportunist', 'farmer']
 
 class Player:
     points = 0
@@ -159,6 +159,20 @@ class Player:
                     return 'cooperate'
                 else:
                     return self.opponent.action
+        elif self.strategy == 'farmer':
+            if self.points > self.opponent.points * 2.0:
+                # Don't kill weaklings
+                return 'cooperate'
+            elif self.points > self.opponent.points:
+                # Defect if opponent is weaker but not immediately killable
+                return 'defect'
+            else:
+                # Otherwise, play Tit-For-Tat
+                if self.action == None:
+                    return 'cooperate'
+                else:
+                    return self.opponent.action
+                
 class Game:
     players = []
     pairs = {}
