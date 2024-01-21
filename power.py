@@ -362,7 +362,7 @@ def main():
         print(round)
         game.play_round()
         round += 1
-        roll = random.randint(1, 200) # Each round there is a 1/100 chance of the game ending
+        roll = random.randint(1, 200) # Each round there is a 1/200 chance of the game ending
         if roll == 1:
             running = False
     game.score()
