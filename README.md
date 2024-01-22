@@ -53,7 +53,7 @@ Each round of the tournament, there is a random 1/5 chance that two players will
 
 There are a total of fifteen strategies, six strategies that are cooperative and never defect first against a non-aggressor, and nine that can defect first. Each strategy will start with 10 players for a total of 150 players in the pool.
 
-### Cooperative
+### Cooperative (Nice)
 
 * Always Cooperate
 * Tit-For-Tat
@@ -62,7 +62,7 @@ There are a total of fifteen strategies, six strategies that are cooperative and
 * Enforcer (Opens with Defect against aggressors, otherwise Tit-For-Tat)
 * Avenger (Opens with Defect against aggressors, otherwise Grim Trigger)
 
-### Aggressive
+### Aggressive (Nasty)
 
 * Always Defect
 * Equalizer (Cooperate when stronger or equal, Defect when weaker)
@@ -111,7 +111,7 @@ Other sufficiently advanced civilizations and entities in the universe should be
 
 ## Conclusion
 
-This simulation has essentially provided a detailed game theoretic proof of the common sense intuition that a world with reciprocal cooperation and retaliation for aggression will lead to a universally better outcome for most people who follow these behaviors than a dog eat dog world where the strong survive and the weak perish, which will eventually lead to one top dog, highlander style, with odds being that you aren’t them. You should therefore open with cooperate, never defect first, and retaliate against aggressors who hurt your friends.
+This simulation has essentially provided a detailed game theoretic proof of the common sense intuition that a world with reciprocal cooperation and retaliation for aggression will lead to a universally better outcome for most people who follow these behaviors than a dog eat dog world where the strong survive and the weak perish, which will eventually lead to one top dog, highlander style, with odds being that you aren’t them. You should therefore open with cooperate, never defect first, and retaliate against aggressors who hurt your friends. In the long run, alliances beat empires.
 
 ## License
 
