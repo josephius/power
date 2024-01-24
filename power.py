@@ -16,7 +16,53 @@
 # Iterated Prisoner's Dilemma with Death, Asymmetric Power, and Aggressor Reputation
 import random
 # There are fifteen strategies, six of which are cooperative and never defect first against a non-aggressor, and nine that can defect first.
-strategies = ['always_cooperate', 'always_defect', 'tit-for-tat', 'grim_trigger', 'pavlov', 'equalizer', 'opportunist', 'smart_opportunist', 'betrayer', 'random', 'enforcer', 'avenger', 'sycophant', 'strategic_opportunist', 'farmer']
+strategies = [
+    'always_cooperate', 
+    'always_defect', 
+    'tit-for-tat', 
+    'grim_trigger', 
+    'pavlov', 
+    'equalizer', 
+    'opportunist', 
+    'smart_opportunist', 
+    'betrayer', 
+    'random', 
+    'enforcer', 
+    'avenger', 
+    'sycophant', 
+    'strategic_opportunist', 
+    'farmer']
+
+starting_numbers = {
+    'always_cooperate': 10, 
+    'always_defect': 10, 
+    'tit-for-tat': 10, 
+    'grim_trigger': 10, 
+    'pavlov': 10, 
+    'equalizer': 10, 
+    'opportunist': 10, 
+    'smart_opportunist': 10, 
+    'betrayer': 10, 
+    'random': 10, 
+    'enforcer': 10, 
+    'avenger': 10, 
+    'sycophant': 10, 
+    'strategic_opportunist': 10, 
+    'farmer': 10}
+
+max_start_points = 5 # Minimum 1
+gains_outside_match = 4.0 # 1/4
+chance_of_match = 5 # 1/5
+chance_of_end = 200 # 1/200
+
+cooperate_player_gains = 8.0 # 1/8
+cooperate_opponent_gains = 4.0 # 1/4
+defect_player_gains = 4.0 # 1/4
+defect_opponent_loses = 2.0 # 1/2
+cap_defect_gains = True
+
+aggressor_tag = False
+alliances = True
 
 class Player:
     points = 0
@@ -114,8 +160,10 @@ class Player:
             else:
                 return 'defect'
         elif self.strategy == 'enforcer':
-            #if self.opponent.aggressor == True and self.action == None:
-            if self.opponent in self.enemies and self.action == None:
+            if aggressor_tag and self.opponent.aggressor == True and self.action == None:
+                #Open with retaliation against aggressor
+                return 'defect'
+            if alliances and self.opponent in self.enemies and self.action == None:
                 #Open with retaliation against aggressor
                 return 'defect'
             else:
@@ -125,9 +173,11 @@ class Player:
                 else:
                     return self.opponent.action
         elif self.strategy == 'avenger':
-            #if self.opponent.aggressor == True and self.action == None:
-            if self.opponent in self.enemies and self.action == None:
-                # Open with retaliation against aggressor
+            if aggressor_tag and self.opponent.aggressor == True and self.action == None:
+                #Open with retaliation against aggressor
+                return 'defect'
+            if alliances and self.opponent in self.enemies and self.action == None:
+                #Open with retaliation against aggressor
                 return 'defect'
             # Play Grim Trigger the rest of the time
             elif self.action == None:
@@ -178,9 +228,9 @@ class Game:
     pairs = {}
     def __init__(self):
         for strat in strategies:
-            for i in range(10):
+            for i in range(starting_numbers[strat]):
                 # Initialize 10 players per strategy, with a random starting points between 1 and 5
-                self.players.append(Player(random.randint(1, 5), strat))
+                self.players.append(Player(random.randint(1, max_start_points), strat))
     
     def play_round(self):
         done = [] # Flags for whether a player as already gone or is dead
@@ -194,7 +244,7 @@ class Game:
                 done.append(True)
         for i, player in enumerate(self.players):
             # Go through the list of players again to actually play the game
-            roll = random.randint(1, 5) # 1/5 chance to either enter or exit a match
+            roll = random.randint(1, chance_of_match) # 1/5 chance to either enter or exit a match
             if done[i] == False:
                 # Alive and hasn't played yet
                 if i not in self.pairs:
@@ -223,7 +273,8 @@ class Game:
                             done[self.pairs[i]] = True
                     else:
                         # Gain points when not in a match
-                        player.points += player.points / 4.0
+                        if gains_outside_match > 0:
+                            player.points += player.points / gains_outside_match
                 else:
                     # Player is in a match
                     play_dilemma(player) # Play next round of match
@@ -271,9 +322,11 @@ def play_dilemma(player):
     player_2_aggressor = player.opponent.aggressor
     # Player 1 can cooperate or defect
     if player_1_action == 'cooperate':
-        player_1_points += player.points / 8.0
-        player_2_points += player.points / 4.0
-        if player not in player.opponent.allies and player not in player.opponent.enemies and player_2_action == 'cooperate':
+        if cooperate_player_gains > 0:
+            player_1_points += player.points / cooperate_player_gains
+        if cooperate_opponent_gains > 0:
+            player_2_points += player.points / cooperate_opponent_gains
+        if alliances and player not in player.opponent.allies and player not in player.opponent.enemies and player_2_action == 'cooperate':
             # Peace
             player.opponent.allies.add(player)
             for ally in player.opponent.allies:
@@ -281,12 +334,17 @@ def play_dilemma(player):
                 if player not in ally.allies:
                     ally.allies.add(player)
     elif player_1_action == 'defect':
-        player_1_points += min(player.points / 4.0, player.opponent.points) # Can't gain more points than the opponent's points
-        player_2_points -= player.points / 2.0
-        if player.opponent.aggressor == False:
+        if defect_player_gains > 0:
+            if cap_defect_gains:
+                player_1_points += min(player.points / defect_player_gains, player.opponent.points) # Can't gain more points than the opponent's points
+            else:
+                player_1_points += player.points / defect_player_gains
+        if defect_opponent_loses > 0:
+            player_2_points -= player.points / defect_opponent_loses
+        if aggressor_tag and player.opponent.aggressor == False:
             # When a player defects first against a non-aggressor, they are labeled an aggressor
             player_1_aggressor = True
-        if player not in player.opponent.enemies and player.opponent not in player.enemies:
+        if alliances and player not in player.opponent.enemies and player.opponent not in player.enemies:
             # Act of aggression
             if player in player.opponent.allies:
                 # Remove from allies and make enemy
@@ -310,9 +368,11 @@ def play_dilemma(player):
         
     # Player 2 can cooperate or defect
     if player_2_action == 'cooperate':
-        player_2_points += player.opponent.points / 8.0
-        player_1_points += player.opponent.points / 4.0
-        if player.opponent not in player.allies and player.opponent not in player.enemies and player_1_action == 'cooperate':
+        if cooperate_player_gains > 0:
+            player_2_points += player.opponent.points / cooperate_player_gains
+        if cooperate_opponent_gains > 0:
+            player_1_points += player.opponent.points / cooperate_opponent_gains
+        if alliances and player.opponent not in player.allies and player.opponent not in player.enemies and player_1_action == 'cooperate':
             # Peace
             player.allies.add(player.opponent)
             for ally in player.allies:
@@ -320,12 +380,17 @@ def play_dilemma(player):
                 if player.opponent not in ally.allies:
                     ally.allies.add(player.opponent)
     elif player_2_action == 'defect':
-        player_2_points += min(player.opponent.points / 4.0, player.points) # Can't gain more points than the opponent's points
-        player_1_points -= player.opponent.points / 2.0
-        if player.aggressor == False:
+        if defect_player_gains > 0:
+            if cap_defect_gains:
+                player_2_points += min(player.opponent.points / defect_player_gains, player.points) # Can't gain more points than the opponent's points
+            else:
+                player_2_points += player.opponent.points / defect_player_gains
+        if defect_opponent_loses > 0:
+            player_1_points -= player.opponent.points / defect_opponent_loses
+        if aggressor_tag and player.aggressor == False:
             # When a player defects first against a non-aggressor, they are labeled an aggressor
             player_2_aggressor = True
-        if player.opponent not in player.enemies and player not in player.opponent.enemies:
+        if alliances and player.opponent not in player.enemies and player not in player.opponent.enemies:
             # Act of aggression
             if player.opponent in player.allies:
                 # Remove from allies and make enemy
@@ -362,7 +427,7 @@ def main():
         print(round)
         game.play_round()
         round += 1
-        roll = random.randint(1, 200) # Each round there is a 1/200 chance of the game ending
+        roll = random.randint(1, chance_of_end) # Each round there is a 1/200 chance of the game ending
         if roll == 1:
             running = False
     game.score()
