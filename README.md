@@ -87,6 +87,12 @@ With the cooperative strategies that target aggressors in play (having Avenger i
 
 Without the anti-aggressor strategies in play, it tends to be the case that there are a few cooperative strategy players alive but everyone else has been eaten by an Opportunist strategy player, who only leaves the few alive because they are stronger than it. Occasionally only a single Opportunist or Betrayer survives to the end.
 
+## Webpage
+
+You can try the simulation yourself here:
+
+http://paxscientia.com/power/
+
 ## Analysis
 
 ### Justification For Payoff Matrix
