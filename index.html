@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Peace Or War Each Round (POWER)</title>
+</head>
+<body>
+    <h1>Peace Or War Each Round (POWER)</h1>
+    <p>Iterated Prisoner's Dilemma with Death, Asymmetric Power, and Aggressor Reputation</p>
+    <h2>Simulation Rules</h2>
+    <table>
+        <tr><td>Max Starting Points (With Minimum Set to 1):</td><td id="MaxStartPoints">5</td><td><button type="button" onclick="setNumDown('MaxStartPoints', 1, 1)"><</button><button type="button" onclick="setNumUp('MaxStartPoints', 10, 1)">></button></td></tr>
+        <tr><td>Player Gains Per Round When Outside of a Match:</td><td id="GainsOutsideMatch">1/4</td><td><button type="button" onclick="setFractionDown('GainsOutsideMatch', false)"><</button><button type="button" onclick="setFractionUp('GainsOutsideMatch', false)">></button></td></tr>
+        <tr><td>Chance of Entering or Exiting a Match:</td><td id="ChanceOfMatch">1/5</td><td><button type="button" onclick="setChanceDown('ChanceOfMatch', 2, 1)"><</button><button type="button" onclick="setChanceUp('ChanceOfMatch', 10, 1)">></button></td></tr>
+        <tr><td>Chance of Game Ending Each Round:</td><td id="ChanceOfEnd">1/200</td><td><button type="button" onclick="setChanceDown('ChanceOfEnd', 50, 50)"><</button><button type="button" onclick="setChanceUp('ChanceOfEnd', 500, 50)">></button></td></tr>
+    </table>
+    <h2>Asymmetric Power System</h2>
+    <p>Values are the fraction of the player's points that will determine the change in points to the target.</p>
+    <h3>Cooperate</h3>
+    <table>
+        <tr><td>Player Gains:</td><td id="CooperatePlayerGains">1/8</td><td><button type="button" onclick="setFractionDown('CooperatePlayerGains', true)"><</button><button type="button" onclick="setFractionUp('CooperatePlayerGains', true)">></button></td></tr>
+        <tr><td>Opponent Gains:</td><td id="CooperateOpponentGains">1/4</td><td><button type="button" onclick="setFractionDown('CooperateOpponentGains', true)"><</button><button type="button" onclick="setFractionUp('CooperateOpponentGains', true)">></button></td></tr>
+    </table>
+    <h3>Defect</h3>
+    <table>
+        <tr><td>Player Gains:</td><td id="DefectPlayerGains">1/4</td><td><button type="button" onclick="setFractionDown('DefectPlayerGains', true)"><</button><button type="button" onclick="setFractionUp('DefectPlayerGains', true)">></button></td></tr>
+        <tr><td>Opponent Loses:</td><td id="DefectOpponentLoses">1/2</td><td><button type="button" onclick="setFractionDown('DefectOpponentLoses', true)"><</button><button type="button" onclick="setFractionUp('DefectOpponentLoses', true)">></button></td></tr>
+    </table>
+    <p>Cap Defecting Player Gains to Total Points of Opponent: <input type="checkbox" checked id="CapDefectGains"></p>
+    <h2>Payoff Matrix</h2>
+    <!-- Is updated whenever gains/loses are modified -->
+    <table>
+        <tr><td></td><td>Cooperate</td><td>Defect</td><td></tr>
+        <tr><td>Cooperate</td><td id="C/C">3, 3</td><td id="C/D">-3, 4</td></tr>
+        <tr><td>Defect</td><td id="D/C">4, -3</td><td id="D/D">-2, -2</td></tr>
+    </table>
+    <h2>Aggressor Reputation System</h2>
+    <table>
+        <tr><td>Universal Aggressor Tag</td><td><input type="radio" name="Aggressor Reputation System" id="AggressorTag"></td></tr>
+        <tr><td>Alliances (Defensive Pacts) with Ally and Enemy Tracking</td><td><input type="radio" name="Aggressor Reputation System" checked id="Alliances"></td></td></tr>
+    </table>
+    <h2>Strategies</h2>
+    <h3>Cooperative (Nice)</h3>
+    <table>
+        <tr><td>Always Cooperate:</td><td id="NumAlwaysCooperate">10</td><td><button type="button" onclick="setNumDown('NumAlwaysCooperate', 0, 10)"><</button><button type="button" onclick="setNumUp('NumAlwaysCooperate', 100, 10)">></button></td><td></td></tr>
+        <tr><td>Tit-For-Tat:</td><td id="NumTitForTat">10</td><td><button type="button" onclick="setNumDown('NumTitForTat', 0, 10)"><</button><button type="button" onclick="setNumUp('NumTitForTat', 100, 10)">></button></td><td></td></tr>
+        <tr><td>Grim Trigger:</td><td id="NumGrimTrigger">10</td><td><button type="button" onclick="setNumDown('NumGrimTrigger', 0, 10)"><</button><button type="button" onclick="setNumUp('NumGrimTrigger', 100, 10)">></button></td><td></td></tr>
+        <tr><td>Pavlov:</td><td id="NumPavlov">10</td><td><button type="button" onclick="setNumDown('NumPavlov', 0, 10)"><</button><button type="button" onclick="setNumUp('NumPavlov', 100, 10)">></button></td><td></td></tr>
+        <tr><td>Enforcer:</td><td id="NumEnforcer">10</td><td><button type="button" onclick="setNumDown('NumEnforcer', 0, 10)"><</button><button type="button" onclick="setNumUp('NumEnforcer', 100, 10)">></button></td><td>(Opens with Defect against aggressors, otherwise Tit-For-Tat)</td></tr>
+        <tr><td>Avenger:</td><td id="NumAvenger">10</td><td><button type="button" onclick="setNumDown('NumAvenger', 0, 10)"><</button><button type="button" onclick="setNumUp('NumAvenger', 100, 10)">></button></td><td>(Opens with Defect against aggressors, otherwise Grim Trigger)</td></tr>
+    </table>
+    <h3>Aggressive (Nasty)</h3>
+    <table>
+        <tr><td>Always Defect:</td><td id="NumAlwaysDefect">10</td><td><button type="button" onclick="setNumDown('NumAlwaysDefect', 0, 10)"><</button><button type="button" onclick="setNumUp('NumAlwaysDefect', 100, 10)">></button></td><td></td></tr>
+        <tr><td>Equalizer:</td><td id="NumEqualizer">10</td><td><button type="button" onclick="setNumDown('NumEqualizer', 0, 10)"><</button><button type="button" onclick="setNumUp('NumEqualizer', 100, 10)">></button></td><td>(Cooperate when stronger or equal, Defect when weaker)</td></tr>
+        <tr><td>Opportunist:</td><td id="NumOpportunist">10</td><td><button type="button" onclick="setNumDown('NumOpportunist', 0, 10)"><</button><button type="button" onclick="setNumUp('NumOpportunist', 100, 10)">></button></td><td>(Defect when stronger, otherwise Tit-For-Tat)</td></tr>
+        <tr><td>Smart Opportunist:</td><td id="NumSmartOpportunist">10</td><td><button type="button" onclick="setNumDown('NumSmartOpportunist', 0, 10)"><</button><button type="button" onclick="setNumUp('NumSmartOpportunist', 100, 10)">></button></td><td>(Defect when twice as strong or greater, otherwise Tit-For-Tat)</td></tr>
+        <tr><td>Betrayer:</td><td id="NumBetrayer">10</td><td><button type="button" onclick="setNumDown('NumBetrayer', 0, 10)"><</button><button type="button" onclick="setNumUp('NumBetrayer', 100, 10)">></button></td><td>(Defect when greater than half as strong and other player Cooperates, otherwise Tit-For-Tat)</td></tr>
+        <tr><td>Random:</td><td id="NumRandom">10</td><td><button type="button" onclick="setNumDown('NumRandom', 0, 10)"><</button><button type="button" onclick="setNumUp('NumRandom', 100, 10)">></button></td><td>(50% Cooperate, 50% Defect)</td></tr>
+        <tr><td>Sycophant:</td><td id="NumSycophant">10</td><td><button type="button" onclick="setNumDown('NumSycophant', 0, 10)"><</button><button type="button" onclick="setNumUp('NumSycophant', 100, 10)">></button></td><td>(Defect when stronger, otherwise Cooperate)</td></tr>
+        <tr><td>Strategic Opportunist:</td><td id="NumStrategicOpportunist">10</td><td><button type="button" onclick="setNumDown('NumStrategicOpportunist', 0, 10)"><</button><button type="button" onclick="setNumUp('NumStrategicOpportunist', 100, 10)">></button></td><td>(Defect when stronger than strongest player in alliance, otherwise Tit-For-Tat)</td></tr>
+        <tr><td>Farmer:</td><td id="NumFarmer">10</td><td><button type="button" onclick="setNumDown('NumFarmer', 0, 10)"><</button><button type="button" onclick="setNumUp('NumFarmer', 100, 10)">></button></td><td>(Plays Opportunist except it leaves weaklings alive)</td></tr>
+    </table>
+    <h2>Round: <span id="RoundCounter">0</span></h2>
+    <h2>Score</h2>
+    <h3>Cooperative (Nice)</h3>
+    <table>
+        <tr><th></th><th>Population</th><th>Total Points</th></tr>
+        <tr><td>Always Cooperate:</td><td id="PopAlwaysCooperate">0</td><td id="PointsAlwaysCooperate">0</td></tr>
+        <tr><td>Tit-For-Tat:</td><td id="PopTitForTat">0</td><td id="PointsTitForTat">0</td></tr>
+        <tr><td>Grim Trigger:</td><td id="PopGrimTrigger">0</td><td id="PointsGrimTrigger">0</td></tr>
+        <tr><td>Pavlov:</td><td id="PopPavlov">0</td><td id="PointsPavlov">0</td></tr>
+        <tr><td>Enforcer:</td><td id="PopEnforcer">0</td><td id="PointsEnforcer">0</td></tr>
+        <tr><td>Avenger:</td><td id="PopAvenger">0</td><td id="PointsAvenger">0</td></tr>
+    </table>
+    <h3>Aggressive (Nasty)</h3>
+    <table>
+        <tr><th></th><th>Population</th><th>Total Points</th></tr>
+        <tr><td>Always Defect:</td><td id="PopAlwaysDefect">0</td><td id="PointsAlwaysDefect">0</td></tr>
+        <tr><td>Equalizer:</td><td id="PopEqualizer">0</td><td id="PointsEqualizer">0</td></tr>
+        <tr><td>Opportunist:</td><td id="PopOpportunist">0</td><td id="PointsOpportunist">0</td></tr>
+        <tr><td>Smart Opportunist:</td><td id="PopSmartOpportunist">0</td><td id="PointsSmartOpportunist">0</td></tr>
+        <tr><td>Betrayer:</td><td id="PopBetrayer">0</td><td id="PointsBetrayer">0</td></tr>
+        <tr><td>Random:</td><td id="PopRandom">0</td><td id="PointsRandom">0</td></tr>
+        <tr><td>Sycophant:</td><td id="PopSycophant">0</td><td id="PointsSycophant">0</td></tr>
+        <tr><td>Strategic Opportunist:</td><td id="PopStrategicOpportunist">0</td><td id="PointsStrategicOpportunist">0</td></tr>
+        <tr><td>Farmer:</td><td id="PopFarmer">0</td><td id="PointsFarmer">0</td></tr>
+    </table>
+    <p><button type="button" onclick="RunSimulation()">Run Simulation</button></p>
+    <script src="interface.js"></script>
+    <script src="logic.js"></script>
+</body>
+</html>
