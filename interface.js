@@ -58,7 +58,10 @@ function setFractionDown(id, payoff) {
 function setChanceUp(id, max, step) {
     var fraction = document.getElementById(id).innerHTML;
     denominator = getDenominator(fraction);
-    if (denominator < max) {
+    if (denominator == 1) {
+        denominator += step - 1;
+    }
+    else if (denominator < max) {
         denominator += step;
     }
     document.getElementById(id).innerHTML = "1/" + denominator;
@@ -68,6 +71,9 @@ function setChanceDown(id, min, step) {
     denominator = getDenominator(fraction);
     if (denominator > min) {
         denominator -= step;
+    }
+    else {
+        denominator = 1;
     }
     document.getElementById(id).innerHTML = "1/" + denominator;
 }

@@ -36,7 +36,8 @@ strategies = [
 var max_start_points = 5 // Minimum 1
 var gains_outside_match = 4.0 // 1/4
 var chance_of_match = 5 // 1/5
-var chance_of_end = 200 // 1/200
+var minimum_rounds = 100
+var chance_of_end = 100 // 1/100
 
 var cooperate_player_gains = 8.0 // 1/8
 var cooperate_opponent_gains = 4.0 // 1/4
@@ -281,7 +282,7 @@ class Game {
     constructor() {
         for (var strat of strategies) {
             for (var i = 0; i < Number(document.getElementById("Num" + strat).innerHTML); i++) {
-                // Initialize 10 players per strategy, with a random starting points between 1 and 5
+                // Initialize n players per strategy, with a random starting points between 1 and max
                 this.players.push(new Player(Math.floor(Math.random() * max_start_points) + 1, strat));
             }
         }
@@ -302,7 +303,7 @@ class Game {
         }
         for (var i = 0; i < this.players.length; i++) {
             // Go through the list of players again to actually play the game
-            var roll = Math.floor(Math.random() * chance_of_match) + 1; // 1/5 chance to either enter or exit a match
+            var roll = Math.floor(Math.random() * chance_of_match) + 1; // Chance to either enter or exit a match
             if (done[i] == false) {
                 // Alive and hasn't played yet
                 if (!this.pairs.has(i)) {
@@ -546,6 +547,7 @@ function RunSimulation() {
     max_start_points = Number(document.getElementById("MaxStartPoints").innerHTML)
     gains_outside_match = getDenominator(document.getElementById("GainsOutsideMatch").innerHTML)
     chance_of_match = getDenominator(document.getElementById("ChanceOfMatch").innerHTML)
+    minimum_rounds = Number(document.getElementById("MinRounds").innerHTML)
     chance_of_end = getDenominator(document.getElementById("ChanceOfEnd").innerHTML)
     
     cooperate_player_gains = getDenominator(document.getElementById("CooperatePlayerGains").innerHTML)
@@ -564,9 +566,11 @@ function RunSimulation() {
         document.getElementById("RoundCounter").innerHTML = round;
         game.play_round();
         round += 1;
-        roll = Math.floor(Math.random() * chance_of_end) + 1; // Each round there is a 1/200 chance of the game ending
-        if (roll == 1) {
-            running = false;
+        if (round > minimum_rounds) {
+            roll = Math.floor(Math.random() * chance_of_end) + 1; // Each round there is a chance of the game ending
+            if (roll == 1) {
+                running = false;
+            }
         }
     }
     game.score()

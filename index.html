@@ -12,7 +12,8 @@
         <tr><td>Max Starting Points (With Minimum Set to 1):</td><td id="MaxStartPoints">5</td><td><button type="button" onclick="setNumDown('MaxStartPoints', 1, 1)"><</button><button type="button" onclick="setNumUp('MaxStartPoints', 10, 1)">></button></td></tr>
         <tr><td>Player Gains Per Round When Outside of a Match:</td><td id="GainsOutsideMatch">1/4</td><td><button type="button" onclick="setFractionDown('GainsOutsideMatch', false)"><</button><button type="button" onclick="setFractionUp('GainsOutsideMatch', false)">></button></td></tr>
         <tr><td>Chance of Entering or Exiting a Match:</td><td id="ChanceOfMatch">1/5</td><td><button type="button" onclick="setChanceDown('ChanceOfMatch', 2, 1)"><</button><button type="button" onclick="setChanceUp('ChanceOfMatch', 10, 1)">></button></td></tr>
-        <tr><td>Chance of Game Ending Each Round:</td><td id="ChanceOfEnd">1/200</td><td><button type="button" onclick="setChanceDown('ChanceOfEnd', 50, 50)"><</button><button type="button" onclick="setChanceUp('ChanceOfEnd', 500, 50)">></button></td></tr>
+        <tr><td>Minimum Number of Rounds:</td><td id="MinRounds">100</td><td><button type="button" onclick="setNumDown('MinRounds', 50, 50)"><</button><button type="button" onclick="setNumUp('MinRounds', 500, 50)">></button></td></tr>
+        <tr><td>Chance of Game Ending Each Round After Minimum:</td><td id="ChanceOfEnd">1/100</td><td><button type="button" onclick="setChanceDown('ChanceOfEnd', 50, 50)"><</button><button type="button" onclick="setChanceUp('ChanceOfEnd', 500, 50)">></button></td></tr>
     </table>
     <h2>Asymmetric Power System</h2>
     <p>Values are the fraction of the player's points that will determine the change in points to the target.</p>

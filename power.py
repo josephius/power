@@ -53,7 +53,8 @@ starting_numbers = {
 max_start_points = 5 # Minimum 1
 gains_outside_match = 4.0 # 1/4
 chance_of_match = 5 # 1/5
-chance_of_end = 200 # 1/200
+minimum_rounds = 100
+chance_of_end = 100 # 1/100
 
 cooperate_player_gains = 8.0 # 1/8
 cooperate_opponent_gains = 4.0 # 1/4
@@ -229,7 +230,7 @@ class Game:
     def __init__(self):
         for strat in strategies:
             for i in range(starting_numbers[strat]):
-                # Initialize 10 players per strategy, with a random starting points between 1 and 5
+                # Initialize n players per strategy, with a random starting points between 1 and max
                 self.players.append(Player(random.randint(1, max_start_points), strat))
     
     def play_round(self):
@@ -244,7 +245,7 @@ class Game:
                 done.append(True)
         for i, player in enumerate(self.players):
             # Go through the list of players again to actually play the game
-            roll = random.randint(1, chance_of_match) # 1/5 chance to either enter or exit a match
+            roll = random.randint(1, chance_of_match) # Chance to either enter or exit a match
             if done[i] == False:
                 # Alive and hasn't played yet
                 if i not in self.pairs:
@@ -270,7 +271,7 @@ class Game:
                             player.opponent.opponent = player
                             play_dilemma(player) # Play first round of match
                             done[i] = True
-                            done[self.pairs[i]] = True
+                            done[pairing] = True
                     else:
                         # Gain points when not in a match
                         if gains_outside_match > 0:
@@ -427,9 +428,10 @@ def main():
         print(round)
         game.play_round()
         round += 1
-        roll = random.randint(1, chance_of_end) # Each round there is a 1/200 chance of the game ending
-        if roll == 1:
-            running = False
+        if round > minimum_rounds:
+            roll = random.randint(1, chance_of_end) # Each round after minimum there is a chance of the game ending
+            if roll == 1:
+                running = False
     game.score()
 
 if __name__ == "__main__":
