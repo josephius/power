@@ -336,7 +336,9 @@ class Game {
                     }
                     else {
                         // Gain points when not in a match
-                        this.players[i].points += this.players[i].points / gains_outside_match;
+                        if (gains_outside_match > 0) {
+                            this.players[i].points += this.players[i].points / gains_outside_match;
+                        }
                     }
                 }
                 else {
@@ -400,8 +402,12 @@ function PlayDilemma(player) {
     var player_2_aggressor = player.opponent.aggressor;
     // Player 1 can cooperate or defect
     if (player_1_action == 'cooperate') {
-        player_1_points += player.points / cooperate_player_gains;
-        player_2_points += player.points / cooperate_opponent_gains;
+        if (cooperate_player_gains > 0) {
+            player_1_points += player.points / cooperate_player_gains;
+        }
+        if (cooperate_opponent_gains > 0) {
+            player_2_points += player.points / cooperate_opponent_gains;
+        }
         if (alliances && !player.opponent.allies.has(player) && !player.opponent.enemies.has(player) && player_2_action == 'cooperate') {
             // Peace
             player.opponent.allies.add(player);
@@ -414,14 +420,18 @@ function PlayDilemma(player) {
         }
     }
     else if (player_1_action == 'defect') {
-        if (cap_defect_gains) {
-            player_1_points += Math.min(player.points / defect_player_gains, player.opponent.points); // Can't gain more points than the opponent's points
-        
+        if (defect_player_gains > 0) {
+            if (cap_defect_gains) {
+                player_1_points += Math.min(player.points / defect_player_gains, player.opponent.points); // Can't gain more points than the opponent's points
+            
+            }
+            else {
+                player_1_points += player.points / defect_player_gains;
+            }
         }
-        else {
-            player_1_points += player.points / defect_player_gains;
+        if (defect_opponent_loses > 0) {
+            player_2_points -= player.points / defect_opponent_loses;
         }
-        player_2_points -= player.points / defect_opponent_loses;
         if (aggressor_tag && player.opponent.aggressor == false) {
             // When a player defects first against a non-aggressor, they are labeled an aggressor
             player_1_aggressor = true;
@@ -459,8 +469,12 @@ function PlayDilemma(player) {
         
     // Player 2 can cooperate or defect
     if (player_2_action == 'cooperate') {
-        player_2_points += player.opponent.points / cooperate_player_gains;
-        player_1_points += player.opponent.points / cooperate_opponent_gains;
+        if (cooperate_player_gains > 0) {
+            player_2_points += player.opponent.points / cooperate_player_gains;
+        }
+        if (cooperate_opponent_gains > 0) {
+            player_1_points += player.opponent.points / cooperate_opponent_gains;
+        }
         if (alliances && !player.allies.has(player.opponent) && player.enemies.has(player.opponent) && player_1_action == 'cooperate') {
             // Peace
             player.allies.add(player.opponent)
@@ -473,13 +487,18 @@ function PlayDilemma(player) {
         }
     }
     else if (player_2_action == 'defect') {
-        if (cap_defect_gains) {
-            player_2_points += Math.min(player.opponent.points / defect_player_gains, player.points); // Can't gain more points than the opponent's points
+        if (defect_player_gains > 0) {
+            if (cap_defect_gains) {
+                player_2_points += Math.min(player.opponent.points / defect_player_gains, player.points); // Can't gain more points than the opponent's points
+            }
+            else {
+                player_2_points += player.opponent.points / defect_player_gains;
+            }
         }
-        else {
-            player_2_points += player.opponent.points / defect_player_gains;
+        if (defect_opponent_loses > 0) {
+            player_1_points -= player.opponent.points / defect_opponent_loses;
         }
-        player_1_points -= player.opponent.points / defect_opponent_loses;
+        
         if (aggressor_tag && player.aggressor == false) {
             // When a player defects first against a non-aggressor, they are labeled an aggressor
             player_2_aggressor = true;
