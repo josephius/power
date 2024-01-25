@@ -442,7 +442,7 @@ function PlayDilemma(player) {
                 // Remove from allies and make enemy
                 player.opponent.allies.delete(player);
             }
-            player.opponent.enemies.add(player)
+            player.opponent.enemies.add(player);
             for (var ally of player.opponent.allies) {
                 // Remove from alliance and make enemy of entire alliance
                 if (ally.allies.has(player)) {
@@ -509,7 +509,7 @@ function PlayDilemma(player) {
                 // Remove from allies and make enemy
                 player.allies.delete(player.opponent);
             }
-            player.enemies.add(player.opponent)
+            player.enemies.add(player.opponent);
             for (var ally of player.allies) {
                 // Remove from alliance and make enemy of entire alliance
                 if (ally.allies.has(player.opponent)) {
