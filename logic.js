@@ -475,7 +475,7 @@ function PlayDilemma(player) {
         if (cooperate_opponent_gains > 0) {
             player_1_points += player.opponent.points / cooperate_opponent_gains;
         }
-        if (alliances && !player.allies.has(player.opponent) && player.enemies.has(player.opponent) && player_1_action == 'cooperate') {
+        if (alliances && !player.allies.has(player.opponent) && !player.enemies.has(player.opponent) && player_1_action == 'cooperate') {
             // Peace
             player.allies.add(player.opponent);
             for (var ally of player.allies) {

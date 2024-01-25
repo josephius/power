@@ -342,7 +342,7 @@ def play_dilemma(player):
                 player_1_points += player.points / defect_player_gains
         if defect_opponent_loses > 0:
             player_2_points -= player.points / defect_opponent_loses
-        if aggressor_tag and player.opponent.aggressor == False:
+        if aggressor_tag and not player.opponent.aggressor:
             # When a player defects first against a non-aggressor, they are labeled an aggressor
             player_1_aggressor = True
         if alliances and player not in player.opponent.enemies and player.opponent not in player.enemies:
@@ -388,7 +388,7 @@ def play_dilemma(player):
                 player_2_points += player.opponent.points / defect_player_gains
         if defect_opponent_loses > 0:
             player_1_points -= player.opponent.points / defect_opponent_loses
-        if aggressor_tag and player.aggressor == False:
+        if aggressor_tag and not player.aggressor:
             # When a player defects first against a non-aggressor, they are labeled an aggressor
             player_2_aggressor = True
         if alliances and player.opponent not in player.enemies and player not in player.opponent.enemies:
