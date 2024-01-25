@@ -58,7 +58,7 @@ function setFractionDown(id, payoff) {
 function setChanceUp(id, max, step) {
     var fraction = document.getElementById(id).innerHTML;
     denominator = getDenominator(fraction);
-    if (denominator == 1) {
+    if (denominator == 1 && step > 1) {
         denominator += step - 1;
     }
     else if (denominator < max) {
@@ -78,12 +78,12 @@ function setChanceDown(id, min, step) {
     document.getElementById(id).innerHTML = "1/" + denominator;
 }
 function getPayoff(id) {
-    denominator = getDenominator(document.getElementById(id).innerHTML)
+    denominator = getDenominator(document.getElementById(id).innerHTML);
     if (denominator == 0) {
-        return 0
+        return 0;
     }
     else {
-        return 1 / denominator
+        return 1 / denominator;
     }
 }
 function updatePayoffMatrix() {

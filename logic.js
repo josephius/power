@@ -33,20 +33,20 @@ strategies = [
     'Farmer'
 ];
 
-var max_start_points = 5 // Minimum 1
-var gains_outside_match = 4.0 // 1/4
-var chance_of_match = 5 // 1/5
-var minimum_rounds = 100
-var chance_of_end = 100 // 1/100
+var max_start_points = 5; // Minimum 1
+var gains_outside_match = 4.0; // 1/4
+var chance_of_match = 5; // 1/5
+var minimum_rounds = 100;
+var chance_of_end = 100; // 1/100
 
-var cooperate_player_gains = 8.0 // 1/8
-var cooperate_opponent_gains = 4.0 // 1/4
-var defect_player_gains = 4.0 // 1/4
-var defect_opponent_loses = 2.0 // 1/2
-var cap_defect_gains = true
+var cooperate_player_gains = 8.0; // 1/8
+var cooperate_opponent_gains = 4.0; // 1/4
+var defect_player_gains = 4.0; // 1/4
+var defect_opponent_loses = 2.0; // 1/2
+var cap_defect_gains = true;
 
-var aggressor_tag = false
-var alliances = true
+var aggressor_tag = false;
+var alliances = true;
 
 class Player {
     points = 0;
@@ -182,7 +182,7 @@ class Player {
             }
         }
         else if (this.strategy == 'Enforcer') {
-            if (aggressor_tag && this.opponent.aggressor == true && this.action == null) {
+            if (aggressor_tag && this.opponent.aggressor && this.action == null) {
                 //Open with retaliation against aggressor
                 return 'defect';
             }
@@ -201,7 +201,7 @@ class Player {
             }
         }
         else if (this.strategy == 'Avenger') {
-            if (aggressor_tag && this.opponent.aggressor == true && this.action == null) {
+            if (aggressor_tag && this.opponent.aggressor && this.action == null) {
                 //Open with retaliation against aggressor
                 return 'defect';
             }
@@ -304,7 +304,7 @@ class Game {
         for (var i = 0; i < this.players.length; i++) {
             // Go through the list of players again to actually play the game
             var roll = Math.floor(Math.random() * chance_of_match) + 1; // Chance to either enter or exit a match
-            if (done[i] == false) {
+            if (!done[i]) {
                 // Alive and hasn't played yet
                 if (!this.pairs.has(i)) {
                     // Not paired currently
@@ -314,11 +314,11 @@ class Game {
                         var tries = new Set();
                         while (pairing == null) {
                             var index = Math.floor(Math.random() * this.players.length); // Choose a random player
-                            if (index != i && !this.pairs.has(index) && done[index] == false) {
+                            if (index != i && !this.pairs.has(index) && !done[index]) {
                                 // Random player is not the same player, is not already in a match, and is still alive and hasn't gone
                                 pairing = index;
                             }
-                            tries.add(index)
+                            tries.add(index);
                             if (tries.size == this.players.length) {
                                 // Gone through all the players in the list and still no match means there are no open options
                                 pairing = i;
@@ -424,7 +424,6 @@ function PlayDilemma(player) {
         if (defect_player_gains > 0) {
             if (cap_defect_gains) {
                 player_1_points += Math.min(player.points / defect_player_gains, player.opponent.points); // Can't gain more points than the opponent's points
-            
             }
             else {
                 player_1_points += player.points / defect_player_gains;
@@ -433,7 +432,7 @@ function PlayDilemma(player) {
         if (defect_opponent_loses > 0) {
             player_2_points -= player.points / defect_opponent_loses;
         }
-        if (aggressor_tag && player.opponent.aggressor == false) {
+        if (aggressor_tag && !player.opponent.aggressor) {
             // When a player defects first against a non-aggressor, they are labeled an aggressor
             player_1_aggressor = true;
         }
@@ -456,7 +455,7 @@ function PlayDilemma(player) {
                     // Remove from allies and make enemy
                     player.allies.delete(player.opponent);
                 }
-                player.enemies.add(player.opponent)
+                player.enemies.add(player.opponent);
                 for (var ally of player.allies) {
                     // Remove from alliance and make enemy of entire alliance
                     if (ally.allies.has(player.opponent)) {
@@ -478,7 +477,7 @@ function PlayDilemma(player) {
         }
         if (alliances && !player.allies.has(player.opponent) && player.enemies.has(player.opponent) && player_1_action == 'cooperate') {
             // Peace
-            player.allies.add(player.opponent)
+            player.allies.add(player.opponent);
             for (var ally of player.allies) {
                 // Join the alliance
                 if (!ally.allies.has(player.opponent)) {
@@ -500,7 +499,7 @@ function PlayDilemma(player) {
             player_1_points -= player.opponent.points / defect_opponent_loses;
         }
         
-        if (aggressor_tag && player.aggressor == false) {
+        if (aggressor_tag && !player.aggressor) {
             // When a player defects first against a non-aggressor, they are labeled an aggressor
             player_2_aggressor = true;
         }
@@ -523,7 +522,7 @@ function PlayDilemma(player) {
                     // Remove from allies and make enemy
                     player.opponent.allies.delete(player);
                 }
-                player.opponent.enemies.add(player)
+                player.opponent.enemies.add(player);
                 for (var ally of player.opponent.allies) {
                     // Remove from alliance and make enemy of entire alliance
                     if (ally.allies.has(player)) {
@@ -544,25 +543,25 @@ function PlayDilemma(player) {
 }
 
 function RunSimulation() {
-    max_start_points = Number(document.getElementById("MaxStartPoints").innerHTML)
-    gains_outside_match = getDenominator(document.getElementById("GainsOutsideMatch").innerHTML)
-    chance_of_match = getDenominator(document.getElementById("ChanceOfMatch").innerHTML)
-    minimum_rounds = Number(document.getElementById("MinRounds").innerHTML)
-    chance_of_end = getDenominator(document.getElementById("ChanceOfEnd").innerHTML)
+    max_start_points = Number(document.getElementById("MaxStartPoints").innerHTML);
+    gains_outside_match = getDenominator(document.getElementById("GainsOutsideMatch").innerHTML);
+    chance_of_match = getDenominator(document.getElementById("ChanceOfMatch").innerHTML);
+    minimum_rounds = Number(document.getElementById("MinRounds").innerHTML);
+    chance_of_end = getDenominator(document.getElementById("ChanceOfEnd").innerHTML);
     
-    cooperate_player_gains = getDenominator(document.getElementById("CooperatePlayerGains").innerHTML)
-    cooperate_opponent_gains = getDenominator(document.getElementById("CooperateOpponentGains").innerHTML)
-    defect_player_gains = getDenominator(document.getElementById("DefectPlayerGains").innerHTML)
-    defect_opponent_loses = getDenominator(document.getElementById("DefectOpponentLoses").innerHTML)
-    cap_defect_gains = document.getElementById("CapDefectGains").checked
+    cooperate_player_gains = getDenominator(document.getElementById("CooperatePlayerGains").innerHTML);
+    cooperate_opponent_gains = getDenominator(document.getElementById("CooperateOpponentGains").innerHTML);
+    defect_player_gains = getDenominator(document.getElementById("DefectPlayerGains").innerHTML);
+    defect_opponent_loses = getDenominator(document.getElementById("DefectOpponentLoses").innerHTML);
+    cap_defect_gains = document.getElementById("CapDefectGains").checked;
     
-    aggressor_tag = document.getElementById("AggressorTag").checked
-    alliances = document.getElementById("Alliances").checked
+    aggressor_tag = document.getElementById("AggressorTag").checked;
+    alliances = document.getElementById("Alliances").checked;
 
-    var game = new Game()
-    var round = 1
-    var running = true
-    while (running == true) {
+    var game = new Game();
+    var round = 1;
+    var running = true;
+    while (running) {
         document.getElementById("RoundCounter").innerHTML = round;
         game.play_round();
         round += 1;
