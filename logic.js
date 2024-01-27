@@ -33,20 +33,20 @@ strategies = [
     'Farmer'
 ];
 
-var max_start_points = 5; // Minimum 1
-var gains_outside_match = 4.0; // 1/4
-var chance_of_match = 5; // 1/5
-var minimum_rounds = 100;
-var chance_of_end = 100; // 1/100
+let max_start_points = 5; // Minimum 1
+let gains_outside_match = 4.0; // 1/4
+let chance_of_match = 5; // 1/5
+let minimum_rounds = 100;
+let chance_of_end = 100; // 1/100
 
-var cooperate_player_gains = 8.0; // 1/8
-var cooperate_opponent_gains = 4.0; // 1/4
-var defect_player_gains = 4.0; // 1/4
-var defect_opponent_loses = 2.0; // 1/2
-var cap_defect_gains = true;
+let cooperate_player_gains = 8.0; // 1/8
+let cooperate_opponent_gains = 4.0; // 1/4
+let defect_player_gains = 4.0; // 1/4
+let defect_opponent_loses = 2.0; // 1/2
+let cap_defect_gains = true;
 
-var aggressor_tag = false;
-var alliances = true;
+let aggressor_tag = false;
+let alliances = true;
 
 class Player {
     points = 0;
@@ -173,7 +173,7 @@ class Player {
         }
         else if (this.strategy == 'Random') {
             // 50-50 chance of either action
-            var coin = Math.floor(Math.random() * 2) + 1;
+            let coin = Math.floor(Math.random() * 2) + 1;
             if (coin == 1) {
                 return 'cooperate';
             }
@@ -234,8 +234,8 @@ class Player {
             }
         }
         else if (this.strategy == 'StrategicOpportunist') {
-            var max_points = this.opponent.points;
-            for (var ally of this.opponent.allies) {
+            let max_points = this.opponent.points;
+            for (let ally of this.opponent.allies) {
                 if (ally.points > max_points) {
                     max_points = ally.points;
                 }
@@ -280,8 +280,8 @@ class Game {
     players = [];
     pairs = new Map();
     constructor() {
-        for (var strat of strategies) {
-            for (var i = 0; i < Number(document.getElementById("Num" + strat).innerHTML); i++) {
+        for (let strat of strategies) {
+            for (let i = 0; i < Number(document.getElementById("Num" + strat).innerHTML); i++) {
                 // Initialize n players per strategy, with a random starting points between 1 and max
                 this.players.push(new Player(Math.floor(Math.random() * max_start_points) + 1, strat));
             }
@@ -289,8 +289,8 @@ class Game {
     }
     
     play_round() {
-        var done = []; // Flags for whether a player as already gone or is dead
-        for (var p of this.players) {
+        let done = []; // Flags for whether a player as already gone or is dead
+        for (let p of this.players) {
             // Go through the list of players and check if they are alive or dead
             if (p.points > 0) {
                 // Living players
@@ -301,19 +301,19 @@ class Game {
                 done.push(true);
             }
         }
-        for (var i = 0; i < this.players.length; i++) {
+        for (let i = 0; i < this.players.length; i++) {
             // Go through the list of players again to actually play the game
-            var roll = Math.floor(Math.random() * chance_of_match) + 1; // Chance to either enter or exit a match
+            let roll = Math.floor(Math.random() * chance_of_match) + 1; // Chance to either enter or exit a match
             if (!done[i]) {
                 // Alive and hasn't played yet
                 if (!this.pairs.has(i)) {
                     // Not paired currently
                     if (roll == 1) {
                         // Pair players
-                        var pairing = null;
-                        var tries = new Set();
+                        let pairing = null;
+                        let tries = new Set();
                         while (pairing == null) {
-                            var index = Math.floor(Math.random() * this.players.length); // Choose a random player
+                            let index = Math.floor(Math.random() * this.players.length); // Choose a random player
                             if (index != i && !this.pairs.has(index) && !done[index]) {
                                 // Random player is not the same player, is not already in a match, and is still alive and hasn't gone
                                 pairing = index;
@@ -362,10 +362,10 @@ class Game {
     }                
 
     score() {
-        var surviving_strategies = new Set();
-        var strategy_counts = new Map(); // Count number of each surviving strategy
-        var strategy_points = new Map(); // Count total points of each surviving strategy
-        for (var player of this.players) {
+        let surviving_strategies = new Set();
+        let strategy_counts = new Map(); // Count number of each surviving strategy
+        let strategy_points = new Map(); // Count total points of each surviving strategy
+        for (let player of this.players) {
             if (player.points > 0) {
                 // Only count survivors
                 if (surviving_strategies.has(player.strategy)) {
@@ -380,7 +380,7 @@ class Game {
             }
         }
         // Display results
-        for (var strategy of strategies) {
+        for (let strategy of strategies) {
             if (surviving_strategies.has(strategy)) {
                 document.getElementById("Pop" + strategy).innerHTML = strategy_counts.get(strategy);
                 document.getElementById("Points" + strategy).innerHTML = strategy_points.get(strategy);
@@ -395,12 +395,12 @@ class Game {
 
 function PlayDilemma(player) {
     // Create temporary state variables
-    var player_1_action = player.get_action();
-    var player_2_action = player.opponent.get_action();
-    var player_1_points = player.points;
-    var player_2_points = player.opponent.points;
-    var player_1_aggressor = player.aggressor;
-    var player_2_aggressor = player.opponent.aggressor;
+    let player_1_action = player.get_action();
+    let player_2_action = player.opponent.get_action();
+    let player_1_points = player.points;
+    let player_2_points = player.opponent.points;
+    let player_1_aggressor = player.aggressor;
+    let player_2_aggressor = player.opponent.aggressor;
     // Player 1 can cooperate or defect
     if (player_1_action == 'cooperate') {
         if (cooperate_player_gains > 0) {
@@ -412,7 +412,7 @@ function PlayDilemma(player) {
         if (alliances && !player.opponent.allies.has(player) && !player.opponent.enemies.has(player) && player_2_action == 'cooperate') {
             // Peace
             player.opponent.allies.add(player);
-            for (var ally of player.opponent.allies) {
+            for (let ally of player.opponent.allies) {
                 // Join the alliance
                 if (!ally.allies.has(player)) {
                     ally.allies.add(player);
@@ -443,7 +443,7 @@ function PlayDilemma(player) {
                 player.opponent.allies.delete(player);
             }
             player.opponent.enemies.add(player);
-            for (var ally of player.opponent.allies) {
+            for (let ally of player.opponent.allies) {
                 // Remove from alliance and make enemy of entire alliance
                 if (ally.allies.has(player)) {
                     ally.allies.delete(player);
@@ -456,7 +456,7 @@ function PlayDilemma(player) {
                     player.allies.delete(player.opponent);
                 }
                 player.enemies.add(player.opponent);
-                for (var ally of player.allies) {
+                for (let ally of player.allies) {
                     // Remove from alliance and make enemy of entire alliance
                     if (ally.allies.has(player.opponent)) {
                         ally.allies.delete(player.opponent);
@@ -478,7 +478,7 @@ function PlayDilemma(player) {
         if (alliances && !player.allies.has(player.opponent) && !player.enemies.has(player.opponent) && player_1_action == 'cooperate') {
             // Peace
             player.allies.add(player.opponent);
-            for (var ally of player.allies) {
+            for (let ally of player.allies) {
                 // Join the alliance
                 if (!ally.allies.has(player.opponent)) {
                     ally.allies.add(player.opponent);
@@ -510,7 +510,7 @@ function PlayDilemma(player) {
                 player.allies.delete(player.opponent);
             }
             player.enemies.add(player.opponent);
-            for (var ally of player.allies) {
+            for (let ally of player.allies) {
                 // Remove from alliance and make enemy of entire alliance
                 if (ally.allies.has(player.opponent)) {
                     ally.allies.delete(player.opponent);
@@ -523,7 +523,7 @@ function PlayDilemma(player) {
                     player.opponent.allies.delete(player);
                 }
                 player.opponent.enemies.add(player);
-                for (var ally of player.opponent.allies) {
+                for (let ally of player.opponent.allies) {
                     // Remove from alliance and make enemy of entire alliance
                     if (ally.allies.has(player)) {
                         ally.allies.delete(player);
@@ -558,9 +558,9 @@ function RunSimulation() {
     aggressor_tag = document.getElementById("AggressorTag").checked;
     alliances = document.getElementById("Alliances").checked;
 
-    var game = new Game();
-    var round = 1;
-    var running = true;
+    let game = new Game();
+    let round = 1;
+    let running = true;
     while (running) {
         document.getElementById("RoundCounter").innerHTML = round;
         game.play_round();
