@@ -49,17 +49,15 @@ let aggressor_tag = false;
 let alliances = true;
 
 class Player {
-    points = 0;
-    strategy = null;
-    action = null;
-    opponent = null;
-    aggressor = false; // A state that is determined by whether a player ever defected first in any round of any match
-    allies = new Set();
-    enemies = new Set();
 
     constructor(points, strategy) {
         this.points = points;
         this.strategy = strategy;
+        this.action = null;
+        this.opponent = null;
+        this.aggressor = false; // A state that is determined by whether a player ever defected first in any round of any match
+        this.allies = new Set();
+        this.enemies = new Set();
     }
 
     get_action() {

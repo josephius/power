@@ -66,17 +66,15 @@ aggressor_tag = False
 alliances = True
 
 class Player:
-    points = 0
-    strategy = None
-    action = None
-    opponent = None
-    aggressor = False # A state that is determined by whether a player ever defected first in any round of any match
-    allies = set()
-    enemies = set()
 
     def __init__(self, points, strategy):
         self.points = points
         self.strategy = strategy
+        self.action = None
+        self.opponent = None
+        self.aggressor = False # A state that is determined by whether a player ever defected first in any round of any match
+        self.allies = set()
+        self.enemies = set()
 
     def get_action(self):
         if self.strategy == 'always_cooperate':
