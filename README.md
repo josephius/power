@@ -39,6 +39,8 @@ Players gain points equal to a quarter of their points (up to the other playerâ€
 | Cooperate | 3, 3      | -3, 4  |
 | Defect    | 4, -3     | -2, -2 |
 
+(Note: Assumes equal power. Fractions multiplied by 8 for better readability.)
+
 ## Aggressor Reputation
 
 There are two versions of this that can be selected from:
