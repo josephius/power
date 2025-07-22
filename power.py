@@ -62,8 +62,8 @@ defect_player_gains = 4.0 # 1/4
 defect_opponent_loses = 2.0 # 1/2
 cap_defect_gains = True
 
-aggressor_tag = False
-alliances = True
+aggressor_tag = True
+alliances = False
 
 class Player:
 
